@@ -1,0 +1,206 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Cálculo de Figuras y Volúmenes</title>
+  <style>
+    body {
+      font-family: 'Segoe UI', sans-serif;
+      background: linear-gradient(to right, #eef2f3, #8e9eab);
+      margin: 0;
+      padding: 20px;
+    }
+    .portada {
+      text-align: center;
+      background-color: white;
+      padding: 40px;
+      border-radius: 20px;
+      box-shadow: 0 0 12px rgba(0,0,0,0.2);
+      margin-bottom: 40px;
+    }
+    .portada h1 {
+      font-size: 28px;
+      color: #2c3e50;
+    }
+    .portada p {
+      font-size: 16px;
+      color: #34495e;
+    }
+    .container {
+      background-color: #ffffff;
+      max-width: 700px;
+      margin: 0 auto;
+      padding: 30px;
+      border-radius: 15px;
+      box-shadow: 0 8px 16px rgba(0, 0, 0, 0.2);
+    }
+    label, select, input, button {
+      width: 100%;
+      margin: 10px 0;
+      padding: 10px;
+      border: 1px solid #ccc;
+      border-radius: 8px;
+    }
+    button {
+      background-color: #3498db;
+      color: white;
+      font-weight: bold;
+      cursor: pointer;
+    }
+    button:hover {
+      background-color: #2980b9;
+    }
+    .respuesta {
+      margin-top: 20px;
+      padding: 15px;
+      background-color: #e0ffe0;
+      border-left: 6px solid #2ecc71;
+      font-weight: bold;
+    }
+    .explicacion, .bibliografia {
+      margin-top: 30px;
+      background-color: #fef9e7;
+      padding: 20px;
+      border-left: 6px solid #f1c40f;
+      border-radius: 10px;
+    }
+    .bibliografia h3 {
+      margin-top: 0;
+    }
+  </style>
+</head>
+<body>
+  <div class="portada">
+    <h1>Cálculo de Áreas, Perímetros y Volúmenes</h1>
+    
+  </div>
+
+  <div class="container">
+    <h2>Introducción</h2>
+    <p>El presente algoritmo permite calcular áreas, perímetros y volúmenes de diferentes figuras geométricas, incluyendo figuras planas y sólidos regulares. También aborda cómo calcular el volumen de un sólido irregular utilizando el principio de Arquímedes.</p>
+
+    <h2>Objetivo</h2>
+    <p>Diseñar una herramienta interactiva que facilite el cálculo de propiedades geométricas básicas como áreas, perímetros y volúmenes para estudiantes y usuarios en general.</p>
+
+    <h2>Seleccione una figura:</h2>
+    <label for="figura">Figuras:</label>
+    <select id="figura" onchange="mostrarInputs()">
+      <option value="">-- Seleccionar --</option>
+      <option value="cuadrado">Cuadrado</option>
+      <option value="círculo">Círculo</option>
+      <option value="triángulo">Triángulo</option>
+      <option value="cubo">Cubo</option>
+      <option value="cilindro">Cilindro</option>
+      <option value="irregular">Sólido Irregular</option>
+    </select>
+
+    <div id="inputs"></div>
+
+    <button onclick="calcular()">Calcular</button>
+
+    <div class="respuesta" id="respuesta"></div>
+
+    <div class="explicacion">
+      <h2>¿Cómo calcular el volumen de un sólido irregular?</h2>
+      <p>El volumen de un sólido irregular no puede calcularse con fórmulas tradicionales. Se usa el principio de Arquímedes: se sumerge el objeto en agua y se mide la cantidad de agua desplazada. Este volumen desplazado equivale al volumen del objeto.</p>
+      <p><strong>Fórmula:</strong> Volumen = Peso en aire - Peso en agua</p>
+    </div>
+
+    <div class="bibliografia">
+      <h3>Bibliografía</h3>
+      <ul>
+        <li>Serway, R. A., & Jewett, J. W. (2014). *Física para ciencias e ingeniería* (9.ª ed.). Cengage Learning.</li>
+        <li>Fundación SENA. (2024). *Materiales de formación en geometría aplicada*. https://www.sena.edu.co</li>
+       
+      </ul>
+    </div>
+  </div>
+
+  <script>
+    function mostrarInputs() {
+      const figura = document.getElementById("figura").value;
+      const inputsDiv = document.getElementById("inputs");
+      inputsDiv.innerHTML = "";
+
+      switch(figura) {
+        case "cuadrado":
+          inputsDiv.innerHTML = '<label>Lado (cm):</label><input type="number" id="lado">';
+          break;
+        case "círculo":
+          inputsDiv.innerHTML = '<label>Radio (cm):</label><input type="number" id="radio">';
+          break;
+        case "triángulo":
+          inputsDiv.innerHTML = '<label>Base (cm):</label><input type="number" id="base">' +
+                                '<label>Altura (cm):</label><input type="number" id="altura">';
+          break;
+        case "cubo":
+          inputsDiv.innerHTML = '<label>Lado (cm):</label><input type="number" id="lado">';
+          break;
+        case "cilindro":
+          inputsDiv.innerHTML = '<label>Radio (cm):</label><input type="number" id="radio">' +
+                                '<label>Altura (cm):</label><input type="number" id="altura">';
+          break;
+        case "irregular":
+          inputsDiv.innerHTML = '<label>Peso del sólido en aire (g):</label><input type="number" id="pesoAire">' +
+                                '<label>Peso del sólido en agua (g):</label><input type="number" id="pesoAgua">';
+          break;
+      }
+    }
+
+    function calcular() {
+      const figura = document.getElementById("figura").value;
+      const respuesta = document.getElementById("respuesta");
+      let resultado = "";
+
+      switch(figura) {
+        case "cuadrado": {
+          const lado = parseFloat(document.getElementById("lado").value);
+          const area = lado * lado;
+          const perimetro = 4 * lado;
+          resultado = `Área: ${area} cm² | Perímetro: ${perimetro} cm`;
+          break;
+        }
+        case "círculo": {
+          const radio = parseFloat(document.getElementById("radio").value);
+          const area = Math.PI * radio * radio;
+          const perimetro = 2 * Math.PI * radio;
+          resultado = `Área: ${area.toFixed(2)} cm² | Perímetro: ${perimetro.toFixed(2)} cm`;
+          break;
+        }
+        case "triángulo": {
+          const base = parseFloat(document.getElementById("base").value);
+          const altura = parseFloat(document.getElementById("altura").value);
+          const area = (base * altura) / 2;
+          resultado = `Área: ${area} cm²`;
+          break;
+        }
+        case "cubo": {
+          const lado = parseFloat(document.getElementById("lado").value);
+          const volumen = Math.pow(lado, 3);
+          resultado = `Volumen: ${volumen} cm³`;
+          break;
+        }
+        case "cilindro": {
+          const radio = parseFloat(document.getElementById("radio").value);
+          const altura = parseFloat(document.getElementById("altura").value);
+          const volumen = Math.PI * Math.pow(radio, 2) * altura;
+          resultado = `Volumen: ${volumen.toFixed(2)} cm³`;
+          break;
+        }
+        case "irregular": {
+          const pesoAire = parseFloat(document.getElementById("pesoAire").value);
+          const pesoAgua = parseFloat(document.getElementById("pesoAgua").value);
+          const volumen = pesoAire - pesoAgua;
+          resultado = `Volumen del sólido irregular (por desplazamiento de agua): ${volumen} cm³`;
+          break;
+        }
+        default:
+          resultado = "Por favor selecciona una figura válida.";
+      }
+
+      respuesta.innerText = resultado;
+    }
+  </script>
+</body>
+</html>
